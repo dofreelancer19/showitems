@@ -80,21 +80,29 @@
         .nav-button {
             background-color: transparent;
             border: none;
-            font-size: 30px;
+            font-size: 20px;
             cursor: pointer;
-            color: #007BFF;
+            color: #fff;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
         }
         .nav-button:hover {
-            color: #0056b3;
+            background-color: rgba(0, 0, 0, 0.7);
         }
         .prev {
-            left: -50px;
+            left: 10px;
         }
         .next {
-            right: -50px;
+            right: 10px;
         }
         .modal-details {
             text-align: center;
@@ -117,8 +125,9 @@
                 height: 40%;
             }
             .nav-button {
-                font-size: 24px;
-                top: 45%;
+                font-size: 16px;
+                width: 25px;
+                height: 25px;
             }
         }
     </style>
@@ -228,7 +237,7 @@
             const product = products[currentIndex];
             document.getElementById('modalImage').src = product.imageUrl;
             document.getElementById('modalTitle').innerText = product.description;
-           
+            document.getElementById('modalDescription').innerText = product.description;
             document.getElementById('modalNumber').innerText = `رقم القطعة: ${product.number}`;
             document.getElementById('modalPrice').innerText = `السعر: ${product.price}`;
             document.getElementById('modalCategory').innerText = `التصنيف: ${product.category}`;
