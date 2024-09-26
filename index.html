@@ -127,7 +127,7 @@
 
         // تحميل البيانات من ملف Excel
         async function loadExcelData() {
-            const response = await fetch('https://github.com/dofreelancer19/showitems/blob/main/index.xlsx'); // استبدل بهذا المسار
+            const response = await fetch('https://raw.githubusercontent.com/dofreelancer19/showitems/main/index.xlsx');
             const data = await response.arrayBuffer();
             const workbook = XLSX.read(data, { type: 'array' });
             const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
