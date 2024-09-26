@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استعراض القطع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 15px;
+            padding: 20px;
+            width: calc(100% - 20px);
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #007BFF;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .nav-button:hover {
+            color: #0056b3;
+        }
+        .prev {
+            left: -50px;
+        }
+        .next {
+            right: -50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>استعراض القطع</h1>
+    </div>
+
+    <div class="product-container" id="productContainer"></div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img src="" alt="صورة المنتج" class="modal-image" id="modalImage">
+            <h2 class="product-title" id="modalTitle"></h2>
+            <p class="product-number" id="modalNumber"></p>
+            <p class="product-price" id="modalPrice"></p>
+            <p class="product-category" id="modalCategory"></p>
+            <button class="nav-button prev" id="prevButton">&#9664;</button>
+            <button class="nav-button next" id="nextButton">&#9654;</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [];
+        let currentIndex = 0;
+
+        document.getElementById('prevButton').addEventListener('click', showPrevious);
+        document.getElementById('nextButton').addEventListener('click', showNext);
+        document.getElementById('modal').addEventListener('click', closeModalOnBackground);
+
+        // تحميل البيانات من ملف Excel
+        async function loadExcelData() {
+            const response = await fetch('test/index.xlsx'); // استبدل بهذا المسار
+            const data = await response.arrayBuffer();
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+            jsonData.forEach((row, index) => {
+                if (index > 0) { // تجاهل صف العناوين
+                    const [number, description, price, imageUrl, category] = row;
+                    if (number && description && price && imageUrl && category) {
+                        products.push({ number, description, price, imageUrl, category });
+                    }
+                }
+            });
+            displayProducts();
+        }
+
+        function displayProducts() {
+            const productContainer = document.getElementById('productContainer');
+            productContainer.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.imageUrl}" alt="صورة المنتج" class="product-image">
+                    <h2 class="product-title">${product.description}</h2>
+                    <p class="product-number">رقم القطعة: ${product.number}</p>
+                    <p class="product-price">السعر: ${product.price}</p>
+                    <p class="product-category">التصنيف: ${product.category}</p>
+                `;
+
+                productCard.onclick = function() {
+                    openModal(index);
+                };
+
+                productContainer.appendChild(productCard);
+            });
+        }
+
+        function openModal(index) {
+            currentIndex = index;
+            const product = products[currentIndex];
+            document.getElementById('modalImage').src = product.imageUrl;
+            document.getElementById('modalTitle').innerText = product.description;
+            document.getElementById('modalNumber').innerText = `رقم القطعة: ${product.number}`;
+            document.getElementById('modalPrice').innerText = `السعر: ${product.price}`;
+            document.getElementById('modalCategory').innerText = `التصنيف: ${product.category}`;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModalOnBackground(event) {
+            if (event.target === document.getElementById('modal')) {
+                document.getElementById('modal').style.display = 'none';
+            }
+        }
+
+        function showPrevious() {
+            if (currentIndex > 0) {
+                openModal(currentIndex - 1);
+            }
+        }
+
+        function showNext() {
+            if (currentIndex < products.length - 1) {
+                openModal(currentIndex + 1);
+            }
+        }
+
+        // استدعاء وظيفة تحميل البيانات عند تحميل الصفحة
+        loadExcelData();
+    </script>
+</body>
+</html>
