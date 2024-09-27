@@ -114,20 +114,42 @@
             white-space: normal;
             word-wrap: break-word;
         }
-
-        /* دعم الشاشات الصغيرة */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .search-container input:focus {
+            border-color: #007BFF; /* لون التركيز */
+            outline: none;
+        }
+        .search-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        .search-container button:hover {
+            background-color: #0056b3; /* لون عند التحويم */
+        }
         @media only screen and (max-width: 600px) {
-            .modal-content {
-                width: 90%;
-                height: 90%;
+            .search-container input {
+                width: 150px;
             }
-            .modal-image {
-                height: 40%;
-            }
-            .nav-button {
-                font-size: 16px;
-                width: 25px;
-                height: 25px;
+            .search-container button {
+                padding: 8px 15px;
+                font-size: 14px;
             }
         }
     </style>
@@ -136,6 +158,11 @@
 
     <div class="header">
         <h1>استعراض القطع</h1>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="أدخل رقم القطعة" dir="ltr">
+        <button id="searchButton">بحث</button>
     </div>
 
     <div class="product-container" id="productContainer"></div>
@@ -163,29 +190,16 @@
         document.getElementById('nextButton').addEventListener('click', showNext);
         document.getElementById('modal').addEventListener('click', closeModalOnBackground);
 
-        let startX = 0;
-
-        // دعم السحب على الشاشات التي تعمل باللمس
-        const modalContent = document.getElementById('modalContent');
-        modalContent.addEventListener('touchstart', handleTouchStart, false);
-        modalContent.addEventListener('touchmove', handleTouchMove, false);
-
-        function handleTouchStart(event) {
-            startX = event.touches[0].clientX;
-        }
-
-        function handleTouchMove(event) {
-            if (!startX) return;
-
-            let moveX = event.touches[0].clientX - startX;
-
-            if (moveX > 50) {
-                showPrevious(); // التمرير لليسار
-            } else if (moveX < -50) {
-                showNext(); // التمرير لليمين
+        // البحث عن المنتج باستخدام الرقم
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const searchValue = document.getElementById('searchInput').value.trim();
+            const product = products.find(p => p.number.toString().trim() === searchValue);
+            if (product) {
+                openModal(products.indexOf(product));
+            } else {
+                alert('رقم القطعة غير موجود.');
             }
-            startX = 0;
-        }
+        });
 
         // تحميل البيانات من ملف Excel
         async function loadExcelData() {
@@ -237,7 +251,6 @@
             const product = products[currentIndex];
             document.getElementById('modalImage').src = product.imageUrl;
             document.getElementById('modalTitle').innerText = product.description;
-         
             document.getElementById('modalNumber').innerText = `رقم القطعة: ${product.number}`;
             document.getElementById('modalPrice').innerText = `السعر: ${product.price}`;
             document.getElementById('modalCategory').innerText = `التصنيف: ${product.category}`;
