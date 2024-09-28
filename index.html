@@ -236,7 +236,7 @@
                     <h2 class="product-title">${truncatedDescription}</h2>
                     <p class="product-number">رقم القطعة: ${product.number}</p>
                     <p class="product-price">السعر: ${product.price}</p>
-                    <p class="product-category">التصنيف: ${product.category}</p>
+                    <p class="product-category">الصنف: ${product.category}</p>
                 `;
 
                 productCard.onclick = function() {
@@ -254,7 +254,7 @@
             document.getElementById('modalTitle').innerText = product.description;
             document.getElementById('modalNumber').innerText = `رقم القطعة: ${product.number}`;
             document.getElementById('modalPrice').innerText = `السعر: ${product.price}`;
-            document.getElementById('modalCategory').innerText = `التصنيف: ${product.category}`;
+            document.getElementById('modalCategory').innerText = `الصنف: ${product.category}`;
             document.getElementById('modal').style.display = 'flex';
         }
 
