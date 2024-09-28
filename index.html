@@ -152,13 +152,17 @@
                 padding: 8px 15px;
                 font-size: 14px;
             }
+		.responsive-image {
+    max-width: 100%;  /* الصورة لن تتجاوز عرض الوالد */
+    height: auto;     /* يحافظ على نسبة العرض إلى الارتفاع */
+    margin-bottom: 10px; /* مسافة أسفل الصورة */
+}
         }
     </style>
 </head>
 <body>
  
-  <img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/images/LOGO.jpeg" alt="وصف الصورة" style="width: auto; height: auto; margin-bottom: 10px;">
-
+  <img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/images/LOGO.jpeg" alt="وصف الصورة" class="responsive-image">
     <div class="header">
         <h1>استعراض القطع</h1>
     </div>
