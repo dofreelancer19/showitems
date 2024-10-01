@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة القطع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            background-color: #FFFFFF;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            width: 95%;
+        }
+
+        .search-container input {
+            padding: 5px 20px 10px 40px;
+            width: 100%;
+            font-size: 20px;
+            border: 2px solid #2a9d8f;
+            border-radius: 5px;
+            text-align: center;
+            color: #333;
+        }
+
+        .search-container .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #2a9d8f;
+            font-size: 15px;
+        }
+
+        .file-input-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .file-input-container input[type="file"] {
+            display: none;
+        }
+
+        .file-input-container label {
+            padding: 10px 20px;
+            background-color: #2a9d8f;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .file-link {
+            display: block;
+            text-align: center;
+            margin: 10px 0;
+            color: #2a9d8f;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .piece-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            
+           
+            justify-content: center;
+        }
+
+        .piece {
+            border-radius: 5px; /* تقليل حدة الزوايا */
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* تقليل درجة الظل الخلفي */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 10;
+            border-top: 5px solid  #DAE1E7;
+ border: 2px solid #2a9d8f;
+            border-radius: 5px;
+        }
+
+        .piece:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* تقليل الظل عند التمرير */
+            background-color: #DAE1E7;
+        }
+
+        .piece-image {
+            height: 250px;
+            
+            align-items: center;
+            justify-content: center;
+           
+            
+             width: 100%;
+          
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .piece-details {
+           background-color: #DAE1E7;
+             border-top: 2px solid #FFFFFF;
+             height: 250px;
+        }
+
+        .piece h2 {
+            font-size: 20px;
+            color: #555;
+        }
+
+        .piece p {
+            font-size: 16px;
+          font-size: 12px;
+            color: #555;
+        }
+
+        .piece .price {
+          
+            font-size: 12px;
+           
+          
+        }
+
+        .piece .category {
+           
+           
+       
+           
+          font-size: 12px;
+           
+         
+        }
+
+       
+
+        .piece-icons i:hover {
+            color: #1e7a6d;
+            transition: color 0.3s;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination button {
+            background-color: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: #1e7a6d;
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        @media screen and (max-width: 800px) {
+            .piece-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .piece-container {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+    </style>
+       <img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/Logo2.png" alt="وصف الصورة" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+</head>
+<body>
+
+    <h1>قائمة القطع</h1>
+
+    <div class="file-input-container">
+        <label for="fileInput">تحميل ملف Excel</label>
+        <input type="file" id="fileInput" accept=".xlsx, .xls" onchange="handleFile(event)">
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن قطعة..." onkeyup="searchPieces()">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div id="piece-container" class="piece-container"></div>
+
+    <div class="pagination">
+        <button id="prevBtn" onclick="prevPage()"><i class="fas fa-chevron-right"></i></button>
+        <button id="nextBtn" onclick="nextPage()"><i class="fas fa-chevron-left"></i></button>
+    </div>
+
+    <script>
+        let pieces = []; // مصفوفة لتخزين بيانات القطع
+        const piecesPerPage = 20;
+        let currentPage = 1;
+
+        // دالة لتحميل ملف Excel
+        function handleFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                pieces = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }).slice(1).map(row => ({
+                    id: row[0],          // رقم القطعة
+                    desc: row[1],        // الوصف
+                    price: row[2],       // السعر
+                    image: row[3],       // مسار الصورة
+                    category: row[4]     // الصنف
+                }));
+                currentPage = 1;
+                displayPieces();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+
+        // دالة لعرض القطع في الصفحة
+        function displayPieces(filteredPieces) {
+            const container = document.getElementById("piece-container");
+            container.innerHTML = ""; // تفريغ المحتوى السابق
+
+            const start = (currentPage - 1) * piecesPerPage;
+            const end = start + piecesPerPage;
+            const piecesToShow = (filteredPieces || pieces).slice(start, end);
+
+            piecesToShow.forEach(piece => {
+                const pieceDiv = document.createElement("div");
+                pieceDiv.classList.add("piece");
+                pieceDiv.innerHTML = `
+                    <div class="piece-image">
+                        <img src="${piece.image}" alt="${piece.desc}" style="max-width: 100%; max-height: 100%;">
+                    </div>
+                    <div class="piece-details">
+                        <h2>${piece.desc}</h2>
+                        <p class="price">${piece.price} ر.س</p>
+                        <p class="category">${piece.category}</p>
+                        <p>رقم القطعة: ${piece.id}</p>
+                        <div class="piece-icons">
+                            <i class="fas fa-info-circle" title="مزيد من المعلومات"></i>
+                            <i class="fas fa-shopping-cart" title="إضافة إلى السلة"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(pieceDiv);
+            });
+
+            // تحديث حالة أزرار التنقل
+            document.getElementById("prevBtn").disabled = currentPage === 1;
+            document.getElementById("nextBtn").disabled = currentPage === Math.ceil((filteredPieces || pieces).length / piecesPerPage);
+        }
+
+        // عرض الصفحة التالية
+        function nextPage() {
+            if (currentPage < Math.ceil(pieces.length / piecesPerPage)) {
+                currentPage++;
+                displayPieces();
+            }
+        }
+
+        // عرض الصفحة السابقة
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPieces();
+            }
+        }
+
+        // دالة البحث
+        function searchPieces() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const filteredPieces = pieces.filter(piece => 
+                piece.desc.toLowerCase().includes(searchTerm) || 
+                piece.id.toString().includes(searchTerm)
+            );
+            currentPage = 1; // إعادة ضبط الصفحة إلى الأولى
+            displayPieces(filteredPieces);
+        }
+
+    </script>
+
+</body>
+</html>
