@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | مشوار سعيد</title>
+    <!-- أضف مكتبة xlsx لتحليل ملفات Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <!-- ======= Styles ====== -->
+
+    <style>
+        /* =========== Google Fonts ============ */
+        @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+        /* =============== Globals ============== */
+        * {
+            font-family: "Ubuntu", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #222;
+            --white: #fff;
+            --gray: #f5f5f5;
+            --black1: #222;
+            --black2: #999;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: var(--gray);
+        }
+
+        /* Container for layout */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .logo-container {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Center the gallery itself */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Center individual gallery items */
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            width: 250px;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .gallery-item .description {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-item .description h4 {
+            font-size: 1.5rem;
+            color: var(--blue);
+            margin-bottom: 20px;
+        }
+
+        .gallery-item .description p {
+            color: var(--black2);
+            font-size: 1.2rem;
+        }
+
+        /* تنسيق السعر */
+        .price {
+            font-size: 1.2rem;
+            color: var(--black);
+            margin-top: 5px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            background-color: var(--blue);
+            color: var(--white);
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #a80014;
+        }
+
+        /* Center search box */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Language Toggle Styles */
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-left: 30px;
+            font-size: 1.2rem;
+        }
+
+        .language-toggle span {
+            margin-left: 5px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/Logo2.png" alt="وصف الصورة" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+<body>
+    <!-- =========== Logo =========== -->
+   
+
+    <!-- =========== Language Toggle =========== -->
+    <div class="language-toggle" id="languageToggle" onclick="toggleLanguage()">
+        <span id="languageIcon">🌐</span>
+        <span id="languageText">E</span>
+    </div>
+
+    <!-- =========== Search Box =========== -->
+    <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="filterGallery()" placeholder="Search by description or number">
+    </div>
+
+    <!-- ========================= Gallery ==================== -->
+    <div class="gallery" id="gallery">
+        <!-- سيتم تعبئة هذه المنطقة بالتفاصيل من ملف Excel -->
+    </div>
+
+    <!-- Modal structure -->
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalDetails">
+                <!-- سيتم تعبئة هذه المنطقة بالتفاصيل عند الضغط على الزر -->
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script>
+        // URL لملف الـ Excel
+        const excelFileUrl = 'https://raw.githubusercontent.com/dofreelancer19/showitems/main/3.xlsx'; // استبدل هذا بالمسار الصحيح لملف Excel
+
+        // وظيفة لتحميل ملف الـ Excel وتحويله إلى JSON
+        async function loadExcelData() {
+            const response = await fetch(excelFileUrl);
+            const arrayBuffer = await response.arrayBuffer();
+            const data = new Uint8Array(arrayBuffer);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(sheet);
+            return jsonData;
+        }
+
+        let currentLanguage = 'en'; // اللغة الافتراضية
+
+        // بناء معرض الصور بناءً على البيانات المسترجعة
+        async function buildGallery() {
+            const data = await loadExcelData();
+            const gallery = document.getElementById('gallery');
+
+            data.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+                galleryItem.setAttribute('data-description-en', item.Description_En);
+                galleryItem.setAttribute('data-number', item.Number);
+                galleryItem.setAttribute('data-description-ar', item.Description_Ar);
+                galleryItem.setAttribute('data-title-en', item.Title_En);
+                galleryItem.setAttribute('data-title-ar', item.Title_Ar);
+
+                galleryItem.innerHTML = `
+                    <img src="${item.ImageUrl}" alt="${item.Title_En}">
+                    <div class="description">
+                        <h4 class="title">${item.Title_En}</h4>
+                        <p class="description-text">${item.Description_En}</p>
+                        <p class="price">${item.Price}</p>
+                        <a href="javascript:void(0);" class="btn" onclick="openModal(this.closest('.gallery-item'))">View</a>
+                    </div>
+                `;
+
+                gallery.appendChild(galleryItem);
+            });
+        }
+
+        // تحميل البيانات وبناء المعرض عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', buildGallery);
+
+        // Function to filter the gallery items based on the search input
+        function filterGallery() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const gallery = document.getElementById('gallery');
+            const items = gallery.getElementsByClassName('gallery-item');
+
+            for (let i = 0; i < items.length; i++) {
+                const description = currentLanguage === 'en' ? items[i].getAttribute('data-description-en') : items[i].getAttribute('data-description-ar');
+                const number = items[i].getAttribute('data-number');
+
+                if (description.toLowerCase().includes(filter) || number.includes(filter)) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        // Get the modal
+        var modal = document.getElementById("itemModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Function to open modal and set content
+        function openModal(item) {
+            const title = currentLanguage === 'en' ? item.getAttribute('data-title-en') : item.getAttribute('data-title-ar');
+            const description = currentLanguage === 'en' ? item.getAttribute('data-description-en') : item.getAttribute('data-description-ar');
+            const price = item.querySelector('.price').innerText;
+            const imageUrl = item.querySelector('img').src;
+
+            const modalDetails = document.getElementById('modalDetails');
+            modalDetails.innerHTML = `
+                <img src="${imageUrl}" alt="${title}" style="width: 100%;">
+                <h4>${title}</h4>
+                <p>${description}</p>
+                <p class="price">${price}</p>
+            `;
+
+            // عرض الـ modal
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Function to toggle language
+        function toggleLanguage() {
+            const icon = document.getElementById('languageIcon');
+            const text = document.getElementById('languageText');
+
+            if (currentLanguage === 'en') {
+                currentLanguage = 'ar';
+                text.innerText = 'العربية';
+                icon.innerText = '🇦🇪'; // Icon for Arabic
+            } else {
+                currentLanguage = 'en';
+                text.innerText = 'English';
+                icon.innerText = '🇬🇧'; // Icon for English
+            }
+
+            // تحديث النصوص في المعرض
+            const galleryItems = document.getElementsByClassName('gallery-item');
+            for (let item of galleryItems) {
+                const title = currentLanguage === 'en' ? item.getAttribute('data-title-en') : item.getAttribute('data-title-ar');
+                const description = currentLanguage === 'en' ? item.getAttribute('data-description-en') : item.getAttribute('data-description-ar');
+                
+                item.querySelector('.title').innerText = title;
+                item.querySelector('.description-text').innerText = description;
+            }
+
+            // تصفية المعرض عند تغيير اللغة
+            filterGallery();
+        }
+    </script>
+</body>
+
+</html>
