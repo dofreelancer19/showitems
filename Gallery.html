@@ -248,7 +248,7 @@
             return jsonData;
         }
 
-        let currentLanguage = 'en'; // اللغة الافتراضية
+        let currentLanguage = 'ar'; // اللغة الافتراضية
 
         // بناء معرض الصور بناءً على البيانات المسترجعة
         async function buildGallery() {
@@ -267,8 +267,9 @@
                 galleryItem.innerHTML = `
                     <img src="${item.ImageUrl}" alt="${item.Title_En}">
                     <div class="description">
-                        <h4 class="title">${item.Title_En}</h4>
+                        
                         <p class="description-text">${item.Description_En}</p>
+                        <h4 class="title">${item.Title_En}</h4>
                         <p class="price">${item.Price}</p>
                       
                        <a href="javascript:void(0);" class="btn" onclick="openModal(this.closest('.gallery-item'))">
