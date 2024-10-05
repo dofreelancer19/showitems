@@ -348,16 +348,18 @@
         function toggleLanguage() {
             const icon = document.getElementById('languageIcon');
             const text = document.getElementById('languageText');
+            const searchInput = document.getElementById('searchInput');
 
             if (currentLanguage === 'en') {
                 currentLanguage = 'ar';
                 text.innerText = '';
-        icon.innerHTML = '<i class="fa-solid fa-language"></i>'; // إضافة أيقونة "fa-language" للتبديل إلى العربية
-                
+                icon.innerHTML = '<i class="fa-solid fa-language"></i>'; // إضافة أيقونة "fa-language" للتبديل إلى العربية
+                searchInput.placeholder = "ابحث عن الوصف أو الرقم"; // تغيير نص الـ placeholder إلى العربية      
             } else {
                 currentLanguage = 'en';
                 text.innerText = '';
-        icon.innerHTML = '<i class="fa-solid fa-language"></i>'; // إضافة أيقونة "fa-language" للتبديل إلى الإنجليزية
+                icon.innerHTML = '<i class="fa-solid fa-language"></i>'; // إضافة أيقونة "fa-language" للتبديل إلى الإنجليزية
+                searchInput.placeholder = "Search by description or number"; // العودة إلى النص الإنجليزي
             }
 
             // تحديث النصوص في المعرض
