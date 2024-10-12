@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,21 +24,21 @@
         }
 
         .profile-background {
-            background: url('https://raw.githubusercontent.com/dofreelancer19/showitems/main/do.png') no-repeat center center/cover;
+            background: url('https://raw.githubusercontent.com/dofreelancer19/showitems/main/bk.png') no-repeat center center / cover;
             border-radius: 10px 10px 0 0;
             height: 200px;
         }
 
         .profile-info {
             text-align: center;
-            margin-top: -60px; /* Overlap the profile background */
+            margin-top: -60px;
         }
 
         .profile-info img {
             border-radius: 50%;
             width: 100px;
             height: 100px;
-            border: 4px solid white; /* White border around the image */
+            border: 4px solid white;
         }
 
         .profile-info h2 {
@@ -124,8 +125,9 @@
 
         .portfolio-icons {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-wrap: wrap; /* Allow the icons to wrap */
+            justify-content: center; /* Center the icons */
+            gap: 20px; /* Space between icons */
             margin-top: 15px;
         }
 
@@ -133,11 +135,12 @@
             text-decoration: none;
             color: #333;
             text-align: center;
+            flex: 0 1 auto; /* Allow icons to grow and shrink */
+            max-width: 100px; /* Optional: limit the maximum width of the icon container */
         }
 
-        .portfolio-icons a i {
-            font-size: 40px; /* Adjust icon size */
-            display: block;
+        .portfolio-icons a h5 {
+            margin: 5px 0 0; /* Adjust the margin for the titles */
         }
 
         @media (max-width: 600px) {
@@ -153,6 +156,7 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
 
     <div class="main-card">
@@ -191,7 +195,7 @@
         </div>
 
         <!-- Portfolio Card -->
-        <div class="portfolio-card card">
+         <!--<div class="portfolio-card card">
             <h3>My Portfolio</h3>
             <div class="portfolio-icons">
                 <a href="https://github.com" target="_blank" title="GitHub">
@@ -211,30 +215,53 @@
                     LinkedIn
                 </a>
             </div>
-        </div>
-     <!-- Application Icons Card -->
+        </div>-->
+
+        <!-- Application Icons Card -->
         <div class="portfolio-card card">
             <h3>Applications</h3>
             <div class="portfolio-icons">
-                <a href="https://slack.com" target="_blank" title="Slack">
-                    <i class="fab fa-slack"></i>
-                    Slack
+                <a href="https://www.appcreator24.com/app2529427-mjaits" target="_blank" title="HTML Editor">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/106.png" alt="HTML Editor" style="width: 40px; height: 40px;">
+                    <h6>HTML Editor</h6>
                 </a>
-                <a href="https://trello.com" target="_blank" title="Trello">
-                    <i class="fab fa-trello"></i>
-                    Trello
+                <a href="https://www.appcreator24.com/app2205466-pb5wjt" target="_blank" title="Random Quote">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/163.png" alt="Random Quote" style="width: 40px; height: 40px;">
+                    <h6>Random Quote</h6>
                 </a>
-                <a href="https://zoom.us" target="_blank" title="Zoom">
-                    <i class="fa-brands fa-android"></i>
-                    Zoom
+                <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Games 99">
+                    <img src="https://www.appcreator24.com/srv/imgs/gen/2177790_icohome.png" alt="Games 99" style="width: 40px; height: 40px;">
+                    <h6>Games 99</h6>
                 </a>
-                <a href="https://www.microsoft.com/en-us/microsoft-teams/group-chat-software" target="_blank" title="Microsoft Teams">
-                    <i class="fab fa-microsoft"></i>
-                    Teams
+                <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/105.png" alt="Another App" style="width: 40px; height: 40px;">
+                    <h6>Another App</h6>
                 </a>
+                <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Yet Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/121.png" alt="Yet Another App" style="width: 40px; height: 40px;">
+                    <h6>Yet Another App</h6>
+                </a>
+                 <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Yet Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/118.png" alt="Yet Another App" style="width: 40px; height: 40px;">
+                    <h6>Yet Another App</h6>
+                </a>
+                  <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Yet Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/117.png" alt="Yet Another App" style="width: 40px; height: 40px;">
+                    <h6>Yet Another App</h6>
+                </a>
+                  <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Yet Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/107.png" alt="Yet Another App" style="width: 40px; height: 40px;">
+                    <h6>Yet Another App</h6>
+                </a>
+        <a href="https://www.appcreator24.com/app2177790-bv5nmf" target="_blank" title="Yet Another App">
+                    <img src="https://www.appcreator24.com/android-app-creator/launchers/132.png" alt="Yet Another App" style="width: 40px; height: 40px;">
+                    <h6>Yet Another App</h6>
+                </a>
+              
             </div>
         </div>
     </div>
 
 </body>
+
 </html>
