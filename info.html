@@ -8,121 +8,140 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
             text-align: center;
-            padding: 50px;
-            background-color: #f4f4f4;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .card h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         .qr-container {
-            margin-top: 50px;
+            margin-bottom: 20px;
         }
 
         .qr-container img {
-            width: 500px; /* الحجم الافتراضي */
-            height: 500px;
-            border: 5px solid #333;
-            padding: 10px;
-            background-color: #fff;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         p {
             font-size: 18px;
-            color: #333;
+            color: #555;
+            margin-bottom: 30px;
         }
 
         .social-icons {
             list-style: none;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
 
         .social-icons li {
             display: inline-block;
-            margin: 10px;
         }
 
         .social-icons a {
             text-decoration: none;
-            color: #000; /* اللون الأسود */
-            font-size: 40px;
+            color: #555;
+            font-size: 30px;
             transition: color 0.3s ease;
         }
 
         .social-icons a:hover {
-            color: #555; /* تغيير طفيف عند التمرير */
+            color: #007BFF; /* Blue color on hover */
         }
 
-        /* استعلامات الوسائط للأجهزة الصغيرة */
+        /* Responsive Design */
         @media (max-width: 768px) {
-            body {
+            .card {
                 padding: 20px;
             }
 
-            .qr-container img {
-                width: 300px; /* حجم أصغر للهواتف */
-                height: 300px;
-            }
-
-            .social-icons a {
-                font-size: 30px; /* تقليل حجم الأيقونات */
+            .card h1 {
+                font-size: 20px;
             }
 
             p {
-                font-size: 16px; /* تقليل حجم النصوص */
+                font-size: 16px;
+            }
+
+            .social-icons a {
+                font-size: 25px;
             }
         }
 
         @media (max-width: 480px) {
-            .qr-container img {
-                width: 200px; /* حجم أصغر للشاشات الصغيرة جداً */
-                height: 200px;
+            .card {
+                padding: 15px;
             }
 
-            .social-icons a {
-                font-size: 25px; /* تقليل حجم الأيقونات أكثر */
+            .card h1 {
+                font-size: 18px;
             }
 
             p {
-                font-size: 14px; /* تقليل حجم النصوص أكثر */
+                font-size: 14px;
+            }
+
+            .social-icons a {
+                font-size: 22px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Scan the QR Code to Visit the Gallery</h1>
-    
-    <div class="qr-container">
-        <img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/%D9%85%D8%B4%D9%88%D8%A7%D8%B1%20%D8%B3%D8%B9%D9%8A%D8%AF%20_%20Gallery%20.png" >
+
+    <div class="card">
+        <h1>Scan the QR Code to Visit the Gallery</h1>
+
+        <div class="qr-container">
+            <img src="https://raw.githubusercontent.com/dofreelancer19/showitems/main/%D9%85%D8%B4%D9%88%D8%A7%D8%B1%20%D8%B3%D8%B9%D9%8A%D8%AF%20_%20Gallery%20.png" alt="QR Code">
+        </div>
+
+        <p>Scan the QR code above or click <a href="https://dofreelancer19.github.io/showitems/Gallery.html" target="_blank">here</a> to visit the gallery directly.</p>
+
+        <h1>Contact Us Using Social Media</h1>
+        <ul class="social-icons">
+            <li>
+                <a href="https://www.instagram.com/mishwarsaeed/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:mishwarsaeed@gmail.com" target="_blank">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </li>
+            <li>
+                <a href="tel:+962779090236" target="_blank">
+                    <i class="fa fa-phone-square" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
     </div>
-    
-    <p>Scan the QR code above or click <a href="https://dofreelancer19.github.io/showitems/Gallery.html" target="_blank">here</a> to visit the gallery directly.</p>
-     <h1>Contact Us Using Social Media</h1>
-    <ul class="social-icons">
-        <li>
-            <a href="https://www.instagram.com/mishwarsaeed/" target="_blank">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </li>
-     <!--    <li>
-            <a href="https://www.facebook.com" target="_blank">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </li>
-        <li>
-            <a href="https://www.twitter.com" target="_blank">
-                <i class="fab fa-twitter"></i>-->
-            </a>
-        </li>
-        <li>
-            <a href="mailto:mishwarsaeed@gmail.com" target="_blank">
-                <i class="fas fa-envelope"></i>
-            </a>
-        </li>
-        <li>
-            <a href="tel:+962779090236" target="_blank">
-                <i class="fa fa-phone-square" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+
 </body>
 </html>
