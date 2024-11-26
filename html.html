@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Code Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background: #0073e6;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        textarea {
+            width: 50%;
+            height: 100%;
+            padding: 10px;
+            border: none;
+            resize: none;
+            outline: none;
+            font-family: monospace;
+        }
+        iframe {
+            width: 50%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML Code Viewer</h1>
+    </header>
+    <div class="container">
+        <textarea id="codeEditor" placeholder="Write your HTML code here..."></textarea>
+        <iframe id="preview"></iframe>
+    </div>
+    <script>
+        const codeEditor = document.getElementById('codeEditor');
+        const preview = document.getElementById('preview');
+
+        codeEditor.addEventListener('input', () => {
+            const code = codeEditor.value;
+            preview.srcdoc = code;
+        });
+    </script>
+</body>
+</html>
