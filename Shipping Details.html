@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Details</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- تحميل مكتبة jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script> <!-- تحميل مكتبة autoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script> <!-- تحميل مكتبة xlsx -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            background-color: #5cb85c;
+            padding: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .details input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-top: 8px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .details input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin-top: 25px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .details input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .download-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .download-btns button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin-top: 25px;
+            transition: background-color 0.3s;
+            width: 100%;;
+        }
+
+        .download-btns button:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            .details input {
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .details input[type="submit"] {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .details input {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .details input[type="submit"] {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Shipping Details</h1>
+
+        <form id="shippingForm">
+            <!-- Ship From Section -->
+            <div class="section-title">Ship From</div>
+            <table>
+                <tr>
+                    <th>Label</th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <td>Ship From</td>
+                    <td><input type="text" id="ship-from" name="ship-from" placeholder="Enter the origin address" required></td>
+                </tr>
+                <tr>
+                    <td>Street</td>
+                    <td><input type="text" id="street" name="street" placeholder="Enter street address" required></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td><input type="text" id="city" name="city" placeholder="Enter city name" required></td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td><input type="text" id="zip-code" name="zip-code" placeholder="Enter zip code" required></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td><input type="text" id="country" name="country" placeholder="Enter country" required></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><input type="text" id="phone" name="phone" placeholder="Enter phone number" required></td>
+                </tr>
+            </table>
+
+            <!-- Ship To Section -->
+            <div class="section-title">Ship To</div>
+            <table>
+                <tr>
+                    <th>Label</th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <td>Ship To</td>
+                    <td><input type="text" id="ship-to" name="ship-to" placeholder="Enter the destination address" required></td>
+                </tr>
+                <tr>
+                    <td>Street</td>
+                    <td><input type="text" id="to-street" name="to-street" placeholder="Enter destination street address" required></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td><input type="text" id="to-city" name="to-city" placeholder="Enter destination city" required></td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td><input type="text" id="to-state" name="to-state" placeholder="Enter destination state" required></td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td><input type="text" id="to-zip-code" name="to-zip-code" placeholder="Enter destination zip code" required></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td><input type="text" id="to-country" name="to-country" placeholder="Enter destination country" required></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><input type="text" id="to-phone" name="to-phone" placeholder="Enter destination phone number" required></td>
+                </tr>
+            </table>
+
+            <!-- Submit Button -->
+            <div class="details">
+                <input type="submit" value="Generate PDF">
+            </div>
+
+            <!-- Download Buttons -->
+            <div class="download-btns">
+                <button type="button" id="downloadExcel">Download Excel</button>
+               <!-- <button type="button" id="downloadPDF">Download PDF</button> -->
+              <!--  <input type="submit" value="Generate PDF"> -->
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // عند تقديم النموذج، يتم إنشاء ملف PDF مع البيانات المدخلة
+        document.getElementById('shippingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // منع إرسال النموذج بشكل عادي
+
+            // استيراد مكتبة jsPDF
+            const { jsPDF } = window.jspdf;
+
+            // استخراج القيم المدخلة من الحقول
+            const shipFrom = document.getElementById('ship-from').value;
+            const street = document.getElementById('street').value;
+            const city = document.getElementById('city').value;
+            const zipCode = document.getElementById('zip-code').value;
+            const country = document.getElementById('country').value;
+            const phone = document.getElementById('phone').value;
+
+            const shipTo = document.getElementById('ship-to').value;
+            const toStreet = document.getElementById('to-street').value;
+            const toCity = document.getElementById('to-city').value;
+            const toState = document.getElementById('to-state').value;
+            const toZipCode = document.getElementById('to-zip-code').value;
+            const toCountry = document.getElementById('to-country').value;
+            const toPhone = document.getElementById('to-phone').value;
+
+            // إنشاء ملف PDF جديد
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text('Shipping Details', 14, 20);
+
+            // إضافة جدول Ship From بدون الأعمدة "Label" و "Details"
+            doc.autoTable({
+                body: [
+                    ['Ship From', shipFrom],
+                    ['Street', street],
+                    ['City', city],
+                    ['Zip Code', zipCode],
+                    ['Country', country],
+                    ['Phone', phone],
+                ],
+                startY: 30,
+                margin: { horizontal: 10 },
+                theme: 'grid',
+                headStyles: { fillColor: [0, 102, 51] },
+                styles: { fontSize: 12 }
+            });
+
+            // إضافة جدول Ship To بنفس الطريقة
+            doc.autoTable({
+                body: [
+                    ['Ship To', shipTo],
+                    ['Street', toStreet],
+                    ['City', toCity],
+                    ['State', toState],
+                    ['Zip Code', toZipCode],
+                    ['Country', toCountry],
+                    ['Phone', toPhone],
+                ],
+                startY: doc.lastAutoTable.finalY + 10, // بداية الجدول التالي بعد الجدول الأول
+                margin: { horizontal: 10 },
+                theme: 'grid',
+                headStyles: { fillColor: [0, 102, 51] },
+                styles: { fontSize: 12 }
+            });
+
+            // تحميل ملف PDF
+            doc.save('shipping-details.pdf');
+        });
+
+        // تحميل ملف Excel بدون الأعمدة "Label" و "Details"
+        document.getElementById('downloadExcel').addEventListener('click', function() {
+            const data = [
+                ['Ship From', document.getElementById('ship-from').value],
+                ['Street', document.getElementById('street').value],
+                ['City', document.getElementById('city').value],
+                ['Zip Code', document.getElementById('zip-code').value],
+                ['Country', document.getElementById('country').value],
+                ['Phone', document.getElementById('phone').value],
+                ['Ship To', document.getElementById('ship-to').value],
+                ['Street', document.getElementById('to-street').value],
+                ['City', document.getElementById('to-city').value],
+                ['Zip Code', document.getElementById('to-zip-code').value],
+                ['Country', document.getElementById('to-country').value],
+                ['Phone', document.getElementById('to-phone').value]
+            ];
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Shipping Details');
+            XLSX.writeFile(wb, 'shipping-details.xlsx');
+        });
+    </script>
+</body>
+</html>
